@@ -1,0 +1,7 @@
+To decrypt the message,
+
+1. Find the private key d such that c^d ≡ m (mod n).
+
+2. Once you have computed d, Decrypt the message by raising c to the power of d modulo n.
+
+The flag is uoft{c2yp70_ch4113n935_5uck}.

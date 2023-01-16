@@ -1,0 +1,7 @@
+1. Print the string in exec as readable characters
+2. Take the code string, convert all the bytes to human readable text by printing it
+3. Will be a base64 string, decode it
+4. Then there will be a program XORing a string and execing it, print the XORd string
+5. Flag is in the if statement
+
+flag: uoft{UnP4CK1n9_PY7H0n5_6E2f9}

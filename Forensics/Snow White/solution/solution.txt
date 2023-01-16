@@ -1,0 +1,3 @@
+stegsnow -C flag.txt
+
+(Requires stegsnow package, available on Ubuntu)

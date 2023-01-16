@@ -1,0 +1,3 @@
+Debug the program or use static analysis to determine that the program is XORing the input and comparing with an encoded flag.
+
+flag: uoft{Y0u_4R3_4_H4X0R}

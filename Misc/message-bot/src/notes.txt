@@ -1,0 +1,3 @@
+Note: The client secret for the "Display" Service Account was removed for 
+security reasons. The secret for the "Hidden Display" Service account was 
+kept.

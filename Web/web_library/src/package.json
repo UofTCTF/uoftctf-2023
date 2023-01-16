@@ -1,0 +1,18 @@
+{
+  "name": "web_library",
+  "version": "1.0.0",
+  "description": "A simple library app",
+  "main": "super_obvious_main_file_name.js",
+  "scripts": {
+    "start": "node super_obvious_main_file_name.js"
+  },
+  "author": "SteakEnthusiast",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "md5": "^2.3.0"
+  },
+  "engines": {
+    "node": "16.15.0"
+  }
+}

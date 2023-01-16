@@ -1,0 +1,3 @@
+strings string_me.exe | findstr /c:"uoft"
+
+flag: "uoft{5Tr1N95_1n_TH3_81NaR135}"

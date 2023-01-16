@@ -1,0 +1,50 @@
+One possible solution is:
+1. Using x32dbg
+2. Run the program and patch the IsDebuggerPresent check with NOPs or patch the test op (found if searching for strings or Win32 API calls)
+3. Find the procedure that verifies the inputted password
+- Adds the value 0x23 to each character
+- XORs with a string to produce "THIS IS THE CORRECT PASSPHRASE!" if correct
+4. When the player finds the password, it will unlock the note they've clicked on
+
+Python script to resolve the password:
+check_phrase = bytes("THIS IS THE CORRECT PASSPHRASE!", "ascii")
+check_encoded = bytearray([0xce, 0x24, 0x38, 0x34, 0x73, 0xd3, 0xc5, 0xa2, 0xc1, 0x1e, 0x3c, 0x76, 0xd6, 0xd9, 0xde, 0xc3, 0x19, 0xc1, 0x2, 0xbb, 0x23, 0x17, 0xc6, 0x9, 0xca, 0x24, 0x23, 0x26, 0x0, 0xdf, 0xb7])
+
+for i in range(len(check_phrase)):
+	print(chr((check_phrase[i] ^ check_encoded[i]) - 0x23), end="") # Output will be wIND0ws_r3V3rsin9_3xP3r7wIND0ws, omit the repeating "wIND0ws" at the end
+
+
+flag: uoft{W1N32_r3v3R51N9_3Xp3r7}
+*The phrase W1N32_r3v3R51N9_3Xp3r7 is the password/key to be entered in the program
+
+
+
+
+
+
+
+
+
+Notes:
+0x23 shifted password: 0x9a, 0x6c, 0x71, 0x67, 0x53, 0x9a, 0x96, 0x82, 0x95, 0x56, 0x79, 0x56, 0x95, 0x96, 0x8c, 0x91, 0x5c, 0x82, 0x56, 0x9b, 0x73, 0x56, 0x95, 0x5a
+
+XORd phrase "THIS IS THE CORRECT PASSPHRASE!": 0xce, 0x24, 0x38, 0x34, 0x73, 0xd3, 0xc5, 0xa2, 0xc1, 0x1e, 0x3c, 0x76, 0xd6, 0xd9, 0xde, 0xc3, 0x19, 0xc1, 0x2, 0xbb, 0x23, 0x17, 0xc6, 0x9, 0xca, 0x24, 0x23, 0x26, 0x0, 0xdf, 0xb7
+
+If XORd with same character, will be null byte, watch out for this when iterating through strings
+
+To generate encoded strings:
+password = bytes("W1N32_r3v3R51N9_3Xp3r7", "ascii")
+shifted = bytearray()
+for i in password:
+	shifted.append(i + 0x23)
+
+phrase = bytes("These are my secret notes...", "ascii")
+xord = bytearray()
+for i in range(len(phrase)):
+	xord.append(phrase[i]^shifted[i%len(shifted)])
+
+print("\"", end="")
+for i in xord:
+	print(f"\\x{i:x}", end="")
+
+print("\\x00\"")

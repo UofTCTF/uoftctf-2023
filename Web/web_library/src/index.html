@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Library</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #e3e3e3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        p {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .book-form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #book-select {
+            width: 60%;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+
+        #select-button {
+            width: 35%;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 99;
+        }
+
+        #popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+        }
+
+        #close-button {
+            float: right;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #book-cover {
+            max-width: 300px;
+            max-height: 300px;
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 5px;
+        }
+
+        #book-name {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #book-description {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to our library!</h1>
+        <p>What book would you like to learn about?</p>
+        <div class="book-form">
+            <select id="book-select">
+                <option value="book1">The Great Gatsby</option>
+                <option value="book2">1984</option>
+                <option value="book3">To Kill a Mockingbird</option>
+            </select>
+            <button id="select-button">Select This Book</button>
+        </div>
+
+    </div>
+    <div id="popup">
+        <div id="popup-content">
+            <button id="close-button">X</button>
+            <h2 id="book-name"></h2>
+            <img id="book-cover">
+            <p id="book-description"></p>
+        </div>
+    </div>
+    <script>
+        const selectButton = document.getElementById("select-button");
+        const bookSelect = document.getElementById("book-select");
+        const popup = document.getElementById("popup");
+        const bookName = document.getElementById("book-name");
+        const bookCover = document.getElementById("book-cover");
+        const bookDescription = document.getElementById("book-description");
+        const closeButton = document.getElementById("close-button");
+
+        selectButton.addEventListener("click", () => {
+            const book = bookSelect.value;
+            fetch("/book", {
+                method: "POST",
+                body: JSON.stringify({
+                    book
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.error) {
+                        console.error(data.data.message);
+                        return;
+                    }
+
+                    const {
+                        bookName: name,
+                        bookCover: cover,
+                        description
+                    } = data.data;
+                    bookName.textContent = `About "${name}":`;
+                    bookDescription.textContent = description;
+
+                    fetch(`/covers?img=${cover}`)
+                        .then((res) => res.blob())
+                        .then((blob) => {
+                            bookCover.src = URL.createObjectURL(blob);
+                            popup.style.display = "block";
+                        });
+                });
+        });
+        closeButton.addEventListener("click", () => {
+            popup.style.display = "none";
+        });
+    </script>
+</body>
+
+</html>

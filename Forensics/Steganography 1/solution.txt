@@ -1,0 +1,5 @@
+Open file properties on windows -> details -> Description -> Comments
+
+Or if using an EXIF data viewer, it will labeled as XP Comment.
+
+https://exifdata.com/
